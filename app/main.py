@@ -43,8 +43,12 @@ def connect():
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
-def clean_filename
-#need to save names but for security prevent hiddden files or traversal
+def clean_filename(name: str) -> str:
+    base = Path(name.replace('\\', '/')).name
+    base = re.sub(r'[^a-zA-Z0-9._ -]', '_', base).strip(' .')
+    if not base or base.startswith('.') or Path(base).suffix.lower() not in ALLOWED:
+        raise ValueError('Unsupported document name/type')
+    return base[:120]
 
 
 def extract(raw: bytes, name: str) -> list[tuple[str, str]]:
@@ -82,4 +86,127 @@ def split_chunks(text: str, max_words: int = 450, overlap: int = 70) -> list[str
             break
     return out
 
-def ollama_post()
+def ollama_post(path: str, payload: dict) -> dict:
+    response = requests.post(f'{OLLAMA}{path}', json=payload, timeout=240)
+    response.raise_for_status()
+    return response.json()
+
+
+def chat(messages: list[dict], json_mode: bool = False) -> str:
+    payload = {'model': CHAT_MODEL, 'messages': messages, 'stream': False,
+               'options': {'temperature': 0.15}}
+    if json_mode:
+        payload['format'] = 'json'
+    answer = ollama_post('/api/chat', payload)
+    return answer['message']['content']
+
+
+def embed(texts: list[str]) -> list[list[float]]:
+    if not texts:
+        return []
+    # Ollama batches embeddings locally; no Python HF downloads.
+    data = ollama_post('/api/embed', {'model': EMBED_MODEL, 'input': texts})
+    return data['embeddings']
+
+
+def ingest(name: str, raw: bytes, approved_sha256: str) -> int:
+    name = clean_filename(name)
+    if len(raw) > MAX_UPLOAD:
+        raise ValueError('Document exceeds 20 MB limit')
+    # Never index a file whose checksum differs from the user-approved baseline.
+    if digest(raw) != approved_sha256:
+        raise ValueError('SHA-256 mismatch; document was not ingested')
+    sections = extract(raw, name)
+    pieces = [(loc, chunk) for loc, section in sections for chunk in split_chunks(section)]
+    if not pieces:
+        raise ValueError('No extractable text; scanned PDFs need text extraction first')
+    vectors = []
+    for start in range(0, len(pieces), 16):
+        vectors.extend(embed([p[1] for p in pieces[start:start+16]]))
+    target = DOCS / name
+    if target.exists() and digest(target.read_bytes()) != approved_sha256:
+        raise ValueError('Filename collision with a different local document')
+    with connect() as con:
+        existing = con.execute('SELECT id, sha256 FROM documents WHERE name=?', (name,)).fetchone()
+        if existing and existing['sha256'] != approved_sha256:
+            raise ValueError('Existing document has a different checksum; rename the replacement')
+        if existing:
+            con.execute('DELETE FROM chunks WHERE document_id=?', (existing['id'],))
+            doc_id = existing['id']
+        else:
+            cur = con.execute('INSERT INTO documents(name, sha256, uploaded_at) VALUES(?,?,?)',
+                              (name, approved_sha256, int(time.time())))
+            doc_id = cur.lastrowid
+        con.executemany('INSERT INTO chunks(document_id,locator,content,embedding) VALUES(?,?,?,?)',
+                        [(doc_id, loc, content, json.dumps(vec))
+                         for (loc, content), vec in zip(pieces, vectors)])
+        # Verify saved bytes before transaction completes.
+        target.write_bytes(raw)
+        if digest(target.read_bytes()) != approved_sha256:
+            raise ValueError('Stored document failed integrity check')
+    return len(pieces)
+
+
+def integrity_report() -> list[dict]:
+    with connect() as con:
+        docs = con.execute('SELECT name,sha256 FROM documents ORDER BY name').fetchall()
+    return [{'name': r['name'], 'sha256': r['sha256'],
+             'valid': (DOCS / r['name']).is_file() and digest((DOCS / r['name']).read_bytes()) == r['sha256']}
+            for r in docs]
+
+
+def retrieve(query: str, limit: int = 5) -> list[dict]:
+    with connect() as con:
+        rows = con.execute('''SELECT d.name, d.sha256, c.locator, c.content, c.embedding
+                              FROM chunks c JOIN documents d ON d.id=c.document_id''').fetchall()
+    valid = {item['name'] for item in integrity_report() if item['valid']}
+    rows = [r for r in rows if r['name'] in valid]
+    if not rows:
+        return []
+    q = np.asarray(embed([query])[0], dtype=np.float32)
+    qnorm = np.linalg.norm(q) + 1e-9
+    scores = []
+    for r in rows:
+        v = np.asarray(json.loads(r['embedding']), dtype=np.float32)
+        if len(v) != len(q):
+            continue
+        score = float(np.dot(q, v) / (qnorm * (np.linalg.norm(v) + 1e-9)))
+        scores.append((score, r))
+    scores.sort(key=lambda x: x[0], reverse=True)
+    return [{'source': r['name'], 'locator': r['locator'], 'text': r['content'], 'score': s}
+            for s, r in scores[:limit]]
+
+
+def all_chunks(limit: int = 150) -> list[dict]:
+    with connect() as con:
+        rows = con.execute('''SELECT d.name,c.locator,c.content FROM chunks c
+                         JOIN documents d ON d.id=c.document_id ORDER BY c.id LIMIT ?''', (limit,)).fetchall()
+    valid = {i['name'] for i in integrity_report() if i['valid']}
+    return [{'source': r['name'], 'locator': r['locator'], 'text': r['content']}
+            for r in rows if r['name'] in valid]
+
+
+def format_context(chunks: list[dict], prefix='S') -> tuple[str, dict]:
+    sources = {}
+    parts = []
+    for i, entry in enumerate(chunks, 1):
+        tag = f'{prefix}{i}'
+        sources[tag] = {'name': entry['source'], 'locator': entry['locator'],
+                        'excerpt': entry['text'][:500]}
+        parts.append(f'[{tag}] {entry["source"]}, {entry["locator"]}\n{entry["text"][:2200]}')
+    return '\n\n'.join(parts), sources
+
+
+def wikipedia_lookup(question: str) -> list[dict]:
+    """Explicitly opt-in Internet enrichment; sends only the typed question (NOT course excerpts)."""
+    url = 'https://en.wikipedia.org/w/api.php'
+    headers = {'User-Agent': 'LocalNetworkSecurityTutor/1.0 (educational demo)'}
+    res = requests.get(url, params={'action': 'query', 'generator': 'search', 'gsrsearch': question[:180],
+                        'gsrlimit': 3, 'prop': 'extracts|info', 'inprop': 'url',
+                        'exintro': 1, 'explaintext': 1, 'exsentences': 5, 'format': 'json'},
+                        headers=headers, timeout=15)
+    res.raise_for_status()
+    pages = res.json().get('query', {}).get('pages', {})
+    return [{'source': p.get('fullurl', ''), 'locator': 'Wikipedia',
+             'text': p.get('extract', '')[:1200]} for p in pages.values() if p.get('extract') and p.get('fullurl')]
+
