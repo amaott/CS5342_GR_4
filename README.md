@@ -5,7 +5,7 @@
 This package contains a Streamlit interface plus unchanged copies of the two uploaded teammate Python files, placed under backend/ so their relative imports work:
 - backend/agents.py = supplied agents.py
 - backend/core.py = supplied main (1).py (renamed for the .core import)
-# Setup
+Setup
 From the network_tutor_ui directory:
 python -m pip install -r requirements.txt
 ollama pull qwen3:4b
