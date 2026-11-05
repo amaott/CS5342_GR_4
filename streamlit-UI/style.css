@@ -115,3 +115,23 @@ section[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
 hr {
     border-color: #E2E8F0;
 }
+/* Improve visibility of Streamlit info and warning messages */
+div[data-testid="stAlert"] {
+    background-color: #f1f5f9 !important;
+    color: #1e293b !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+}
+
+/* Make the message text readable */
+div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] span,
+div[data-testid="stAlert"] div {
+    color: #1e293b !important;
+}
+
+/* Make alert icons visible */
+div[data-testid="stAlert"] svg {
+    color: #334155 !important;
+    fill: #334155 !important;
+}
