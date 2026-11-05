@@ -1,0 +1,253 @@
+
+/* Network Security Tutor — Clean Dashboard Theme */
+
+.stApp {
+    background-color: #F8FAFC;
+    color: #1E293B;
+}
+
+/* Main content */
+.block-container {
+    max-width: 1100px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #1E293B;
+    letter-spacing: -0.5px;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #EEF2FF;
+    border-right: 1px solid #E2E8F0;
+}
+
+/* Sidebar navigation */
+section[data-testid="stSidebar"] [role="radiogroup"] {
+    gap: 6px;
+}
+
+section[data-testid="stSidebar"] [role="radiogroup"] label {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+section[data-testid="stSidebar"] [role="radiogroup"] label:hover {
+    background-color: #E0E7FF;
+}
+
+section[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
+    background-color: #DBEAFE;
+    font-weight: 600;
+}
+
+/* Buttons */
+.stButton > button,
+.stFormSubmitButton > button {
+    background-color: #4F46E5;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+}
+
+.stButton > button:hover,
+.stFormSubmitButton > button:hover {
+    background-color: #4338CA;
+    color: white;
+}
+
+/* Text inputs */
+.stTextInput input,
+.stTextArea textarea {
+    border-radius: 10px;
+    border: 1px solid #CBD5E1;
+}
+
+/* Quiz forms */
+[data-testid="stForm"] {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+/* Source citations */
+[data-testid="stExpander"] {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+}
+
+/* Chat messages */
+[data-testid="stChatMessage"] {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+/* Feature cards */
+[data-testid="stHorizontalBlock"]
+[data-testid="stVerticalBlockBorderWrapper"] {
+    height: 100%;
+}
+
+[data-testid="stHorizontalBlock"]
+[data-testid="stVerticalBlockBorderWrapper"] h3 {
+    font-size: 19px !important;
+    line-height: 1.4;
+    font-weight: 650;
+}
+
+[data-testid="stHorizontalBlock"]
+[data-testid="stVerticalBlockBorderWrapper"] p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Dividers */
+hr {
+    border-color: #E2E8F0;
+}
+/* Improve visibility of Streamlit info and warning messages */
+div[data-testid="stAlert"] {
+    background-color: #f1f5f9 !important;
+    color: #1e293b !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+}
+
+/* Make the message text readable */
+div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] span,
+div[data-testid="stAlert"] div {
+    color: #1e293b !important;
+}
+
+/* Make alert icons visible */
+div[data-testid="stAlert"] svg {
+    color: #334155 !important;
+    fill: #334155 !important;
+}
+/* Improve WORKSPACE sidebar navigation readability */
+section[data-testid="stSidebar"] {
+    background-color: #f1f5f9 !important;
+}
+
+/* Sidebar navigation text */
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] a,
+section[data-testid="stSidebar"] label {
+    color: #1e293b !important;
+}
+
+/* Sidebar navigation buttons */
+section[data-testid="stSidebar"] button {
+    color: #1e293b !important;
+}
+
+/* Sidebar navigation hover */
+section[data-testid="stSidebar"] button:hover {
+    background-color: #dbeafe !important;
+    color: #0f172a !important;
+}
+/* Improve Quiz Generator description readability */
+section[data-testid="stMain"] p,
+section[data-testid="stMain"] small {
+    color: #334155 !important;
+}
+/* Fix white text in Q&A Tutor and Quiz Agent content */
+.stApp [data-testid="stMarkdownContainer"] p,
+.stApp [data-testid="stMarkdownContainer"] h1,
+.stApp [data-testid="stMarkdownContainer"] h2,
+.stApp [data-testid="stMarkdownContainer"] h3,
+.stApp [data-testid="stMarkdownContainer"] strong,
+.stApp [data-testid="stMarkdownContainer"] span {
+    color: #1e293b !important;
+}
+
+/* Fix text in input labels and descriptions */
+.stApp [data-testid="stWidgetLabel"] p,
+.stApp [data-testid="stWidgetLabel"] span,
+.stApp [data-testid="stCaptionContainer"] p {
+    color: #334155 !important;
+}
+/* Wikipedia toggle - OFF state */
+.stApp [data-testid="stToggle"] [role="switch"] {
+    background-color: #cbd5e1 !important;
+    border: 2px solid #475569 !important;
+    box-shadow: none !important;
+}
+
+/* Wikipedia toggle - ON state */
+.stApp [data-testid="stToggle"] [role="switch"][aria-checked="true"] {
+    background-color: #2563eb !important;
+    border-color: #1d4ed8 !important;
+}
+
+/* Toggle label */
+.stApp [data-testid="stToggle"] label,
+.stApp [data-testid="stToggle"] label p {
+    color: #1e293b !important;
+}
+
+/* Wikipedia toggle - OFF state */
+.stApp label[data-baseweb="checkbox"] > div:first-child {
+    background-color: #cbd5e1 !important;
+    border: 2px solid #64748b !important;
+    border-radius: 20px !important;
+}
+
+/* Wikipedia toggle - ON state */
+.stApp label[data-baseweb="checkbox"]:has(input[aria-checked="true"]) > div:first-child {
+    background-color: #2563eb !important;
+    border-color: #1d4ed8 !important;
+}
+
+/* Toggle label text */
+.stApp label[data-baseweb="checkbox"] [data-testid="stWidgetLabel"] p {
+    color: #1e293b !important;
+}
+
+/* Toggle circle */
+.stApp label[data-baseweb="checkbox"] > div:first-child > div {
+    background-color: #ffffff !important;
+    border: 1px solid #475569 !important;
+    border-radius: 50% !important;
+}
+
+/* FORCE readable source citation styling */
+
+/* Citation expander */
+.stApp div[data-testid="stExpander"] {
+    background: #FFFFFF !important;
+    color: #1E293B !important;
+    font-size: 12px !important;
+}
+
+/* All citation text inside the expander */
+.stApp div[data-testid="stExpander"] * {
+    color: #1E293B !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+}
+
+/* Citation excerpts */
+.stApp div[data-testid="stExpander"] [data-testid="stCaptionContainer"] p {
+    color: #475569 !important;
+    font-size: 11px !important;
+}
+
+/* Quiz citations displayed below questions */
+.stApp [data-testid="stForm"] [data-testid="stCaptionContainer"] * {
+    color: #475569 !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+}
