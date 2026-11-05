@@ -135,3 +135,90 @@ div[data-testid="stAlert"] svg {
     color: #334155 !important;
     fill: #334155 !important;
 }
+/* Improve WORKSPACE sidebar navigation readability */
+section[data-testid="stSidebar"] {
+    background-color: #f1f5f9 !important;
+}
+
+/* Sidebar navigation text */
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] a,
+section[data-testid="stSidebar"] label {
+    color: #1e293b !important;
+}
+
+/* Sidebar navigation buttons */
+section[data-testid="stSidebar"] button {
+    color: #1e293b !important;
+}
+
+/* Sidebar navigation hover */
+section[data-testid="stSidebar"] button:hover {
+    background-color: #dbeafe !important;
+    color: #0f172a !important;
+}
+/* Improve Quiz Generator description readability */
+section[data-testid="stMain"] p,
+section[data-testid="stMain"] small {
+    color: #334155 !important;
+}
+/* Fix white text in Q&A Tutor and Quiz Agent content */
+.stApp [data-testid="stMarkdownContainer"] p,
+.stApp [data-testid="stMarkdownContainer"] h1,
+.stApp [data-testid="stMarkdownContainer"] h2,
+.stApp [data-testid="stMarkdownContainer"] h3,
+.stApp [data-testid="stMarkdownContainer"] strong,
+.stApp [data-testid="stMarkdownContainer"] span {
+    color: #1e293b !important;
+}
+
+/* Fix text in input labels and descriptions */
+.stApp [data-testid="stWidgetLabel"] p,
+.stApp [data-testid="stWidgetLabel"] span,
+.stApp [data-testid="stCaptionContainer"] p {
+    color: #334155 !important;
+}
+/* Wikipedia toggle - OFF state */
+.stApp [data-testid="stToggle"] [role="switch"] {
+    background-color: #cbd5e1 !important;
+    border: 2px solid #475569 !important;
+    box-shadow: none !important;
+}
+
+/* Wikipedia toggle - ON state */
+.stApp [data-testid="stToggle"] [role="switch"][aria-checked="true"] {
+    background-color: #2563eb !important;
+    border-color: #1d4ed8 !important;
+}
+
+/* Toggle label */
+.stApp [data-testid="stToggle"] label,
+.stApp [data-testid="stToggle"] label p {
+    color: #1e293b !important;
+}
+
+/* Wikipedia toggle - OFF state */
+.stApp label[data-baseweb="checkbox"] > div:first-child {
+    background-color: #cbd5e1 !important;
+    border: 2px solid #64748b !important;
+    border-radius: 20px !important;
+}
+
+/* Wikipedia toggle - ON state */
+.stApp label[data-baseweb="checkbox"]:has(input[aria-checked="true"]) > div:first-child {
+    background-color: #2563eb !important;
+    border-color: #1d4ed8 !important;
+}
+
+/* Toggle label text */
+.stApp label[data-baseweb="checkbox"] [data-testid="stWidgetLabel"] p {
+    color: #1e293b !important;
+}
+
+/* Toggle circle */
+.stApp label[data-baseweb="checkbox"] > div:first-child > div {
+    background-color: #ffffff !important;
+    border: 1px solid #475569 !important;
+    border-radius: 50% !important;
+}
