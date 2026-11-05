@@ -50,7 +50,46 @@ def clean_filename(name: str) -> str:
     if not base or base.startswith('.') or Path(base).suffix.lower() not in ALLOWED:
         raise ValueError('Unsupported document name/type')
     return base[:120]
+def delete_document(document_name: str) -> bool:
+    name = clean_filename(document_name)
 
+    con = connect()
+
+    try:
+        document = con.execute(
+            'SELECT id FROM documents WHERE name = ?',
+            (name,)
+        ).fetchone()
+
+        if document is None:
+            return False
+
+        document_id = document['id']
+
+        # Delete all indexed chunks and embeddings
+        con.execute(
+            'DELETE FROM chunks WHERE document_id = ?',
+            (document_id,)
+        )
+
+        # Delete the document record
+        con.execute(
+            'DELETE FROM documents WHERE id = ?',
+            (document_id,)
+        )
+
+        con.commit()
+
+    finally:
+        con.close()
+
+    # Delete the original local file
+    file_path = DOCS / name
+
+    if file_path.exists():
+        file_path.unlink()
+
+    return True
 
 def extract(raw: bytes, name: str) -> list[tuple[str, str]]:
     ext = Path(name).suffix.lower()

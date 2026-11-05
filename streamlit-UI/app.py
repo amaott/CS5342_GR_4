@@ -8,11 +8,11 @@ from pathlib import Path
 from backend import agents, core
 
 # Page configuration
-st.set_page_config(
-    page_title='Network Security Tutor',
-    page_icon='🛡️',
-    layout='wide'
-)
+#st.set_page_config(
+   # page_title='Network Security Tutor',
+   # page_icon='🛡️',
+   # layout='wide'
+#)
 
 # Load custom CSS
 css_path = Path(__file__).parent / "style.css"
@@ -249,15 +249,25 @@ elif page == 'Quiz Agent':
                 st.write('Expected answer:', result['correct'])
                 sources_panel(quiz['sources'], result.get('citations', []))
 
+
 elif page == 'Course Documents':
     st.header('Upload course documents')
     st.info('Documents are processed locally. Review the SHA-256 hash before approving ingestion.')
-    uploaded = st.file_uploader('Choose a file', type=['pdf', 'txt', 'md', 'docx', 'pptx'])
+
+    uploaded = st.file_uploader(
+        'Choose a file',
+        type=['pdf', 'txt', 'md', 'docx', 'pptx']
+    )
+
     if uploaded is not None:
         data = uploaded.getvalue()
         st.write('File:', uploaded.name, '· Size:', f'{len(data):,} bytes')
         st.code(core.digest(data), language=None)
-        approved = st.checkbox('I approve this document and its displayed SHA-256 hash for local indexing')
+
+        approved = st.checkbox(
+            'I approve this document and its displayed SHA-256 hash for local indexing'
+        )
+
         if st.button('Verify and index document', disabled=not approved, type='primary'):
             with st.spinner('Extracting text and creating local embeddings...'):
                 try:
@@ -265,30 +275,79 @@ elif page == 'Course Documents':
                     st.success(f'Indexed {n} text chunks. SHA-256 verified.')
                 except Exception as exc:
                     st.error(f'Upload failed: {exc}')
+
     st.subheader('Indexed documents')
+
     try:
         report = core.integrity_report()
+
         if report:
             for item in report:
-                st.write(('✅' if item['valid'] else '❌'), item['name'], '—', 'Verified' if item['valid'] else 'Integrity mismatch')
+                st.write(
+                    ('✅' if item['valid'] else '❌'),
+                    item['name'],
+                    '—',
+                    'Verified' if item['valid'] else 'Integrity mismatch'
+                )
+
+            # DELETE DOCUMENT SECTION
+            st.divider()
+            st.subheader('Delete a document')
+
+            document_names = [item['name'] for item in report]
+
+            selected_document = st.selectbox(
+                'Select the document you want to delete',
+                document_names
+            )
+
+            confirm_delete = st.checkbox(
+                f'I understand that deleting {selected_document} '
+                'will remove its indexed content and local file.'
+            )
+
+            if st.button(
+                'Delete selected document',
+                disabled=not confirm_delete,
+                type='secondary'
+            ):
+                try:
+                    deleted = core.delete_document(selected_document)
+
+                    if deleted:
+                        st.success(f'{selected_document} was successfully deleted.')
+                        st.rerun()
+                    else:
+                        st.warning('Document was not found in the database.')
+
+                except Exception as exc:
+                    st.error(f'Delete failed: {exc}')
+
         else:
             st.caption('No documents indexed yet.')
+
     except Exception as exc:
         st.error(f'Could not read local database: {exc}')
+
 
 else:
     st.header('Security & Integrity')
     st.info('This page displays local integrity checks. Network traffic capture and adversarial test logs must still be performed and submitted separately.')
+
     if st.button('Run integrity check', type='primary'):
         try:
             report = core.integrity_report()
+
             if not report:
                 st.warning('No indexed documents to check.')
+
             for item in report:
                 st.write(('✅ PASS' if item['valid'] else '❌ FAIL') + ' — ' + item['name'])
                 st.code(item['sha256'], language=None)
+
         except Exception as exc:
             st.error(f'Integrity check failed: {exc}')
+
     st.subheader('Verification checklist')
     st.checkbox('Capture local-only traffic using Wireshark/tcpdump')
     st.checkbox('Capture opted-in internet lookup traffic')

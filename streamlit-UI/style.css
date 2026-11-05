@@ -222,3 +222,32 @@ section[data-testid="stMain"] small {
     border: 1px solid #475569 !important;
     border-radius: 50% !important;
 }
+
+/* FORCE readable source citation styling */
+
+/* Citation expander */
+.stApp div[data-testid="stExpander"] {
+    background: #FFFFFF !important;
+    color: #1E293B !important;
+    font-size: 12px !important;
+}
+
+/* All citation text inside the expander */
+.stApp div[data-testid="stExpander"] * {
+    color: #1E293B !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+}
+
+/* Citation excerpts */
+.stApp div[data-testid="stExpander"] [data-testid="stCaptionContainer"] p {
+    color: #475569 !important;
+    font-size: 11px !important;
+}
+
+/* Quiz citations displayed below questions */
+.stApp [data-testid="stForm"] [data-testid="stCaptionContainer"] * {
+    color: #475569 !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+}
