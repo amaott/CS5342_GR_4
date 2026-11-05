@@ -1,0 +1,22 @@
+# Python virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Private configuration
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Local data (review before sharing)
+# local_data/
+# PyCharm settings
+.idea/
+# Local SQLite database
+local_data/*.sqlite3
