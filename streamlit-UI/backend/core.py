@@ -11,7 +11,7 @@ DATA = ROOT / 'local_data'
 DOCS = DATA / 'documents'
 DB = DATA / 'knowledge.sqlite3'
 OLLAMA = os.getenv('OLLAMA_URL', 'http://127.0.0.1:11434').rstrip('/')
-CHAT_MODEL = os.getenv('CHAT_MODEL', 'qwen2.5:3b')
+CHAT_MODEL = os.getenv('CHAT_MODEL', 'qwen3:4b')
 print("DEBUG active model:", CHAT_MODEL)
 EMBED_MODEL = os.getenv('EMBED_MODEL', 'nomic-embed-text')
 ALLOWED = {'.pdf', '.txt', '.md', '.docx', '.pptx'}
