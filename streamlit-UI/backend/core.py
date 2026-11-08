@@ -139,7 +139,7 @@ def chat(messages: list[dict], json_mode: bool = False) -> str:
         'think': False,
         'options': {
             'temperature': 0.15,
-            'num_predict': 1200
+            'num_predict': 500
         }
     }
 
