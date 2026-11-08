@@ -8,7 +8,7 @@ This package contains a Streamlit interface plus unchanged copies of the two upl
 Setup
 From the network_tutor_ui directory:
 python -m pip install -r requirements.txt
-ollama pull qwen3:4b
+ollama pull qwen2.5:3b
 ollama pull nomic-embed-text
 ollama serve
 
