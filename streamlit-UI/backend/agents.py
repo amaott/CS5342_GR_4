@@ -41,11 +41,6 @@ def tutor(question: str, web_enabled: bool = False) -> dict:
             ),
             'sources': {}
         }
-    if re.search(r'\bcapital\s+of\s+france\b', question, re.IGNORECASE):
-        return {
-            'answer': 'I can only answer questions supported by the network security course materials.',
-            'sources': {}
-        }
     chunks = retrieve(question, 5)
 
     print("DEBUG retrieved chunks:")
