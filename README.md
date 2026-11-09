@@ -30,7 +30,7 @@ User
 Streamlit UI (app.py, style.css)
   |-- Q&A Tutor --------> Agent / retrieval logic
   |                         |-- Local course knowledge base (SQLite, embeddings)
-  |                         |-- Ollama (qwen3:4b)
+  |                         |-- Ollama (2.5:3b)
   |                         `-- Optional Wikipedia lookup (explicitly enabled)
   |-- Quiz Agent -------> Quiz generation and grading logic
   |-- Course Documents -> Local upload / SHA-256 verification
