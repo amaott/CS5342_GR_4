@@ -1,0 +1,33 @@
+
+Source: Lecture 22_slides.pdf
+Page: 3
+Topic: RSA-PSS Verification Scheme
+Type: Human-verified description of the lecture diagram
+
+RSA-PSS Signature Generation (left diagram):
+
+1. Compute mHash = Hash(M).
+2. Construct M' using padding1, mHash, and salt.
+3. Compute H = Hash(M').
+4. Construct DB using padding2 and salt.
+5. Use MGF with H to generate a mask.
+6. XOR DB with the MGF output to produce maskedDB.
+7. Construct EM using maskedDB, H, and the hexadecimal constant bc.
+8. Apply the RSA private-key operation to EM to generate the signature.
+
+RSA-PSS Verification (right diagram):
+
+1. Begin with the encoded message EM recovered during RSA signature verification using the signer's public key.
+2. Extract maskedDB and H from EM.
+3. Apply MGF to H to generate dbMask.
+4. XOR maskedDB with dbMask to recover DB.
+5. Extract salt from DB.
+6. Independently compute mHash = Hash(M).
+7. Construct M' using padding1, mHash, and the recovered salt.
+8. Compute H' = Hash(M').
+9. Compare H' with H. The hashes must match for verification to succeed.
+
+Important:
+The private key is used for signature generation.
+The public key is used for signature verification.
+The right-hand diagram illustrates the RSA-PSS encoding verification process, not the complete RSA public-key operation.
