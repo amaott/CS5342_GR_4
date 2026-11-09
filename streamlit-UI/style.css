@@ -1,0 +1,178 @@
+/* Presentation only: minimalist white sidebar and clean study workspace. */
+:root { --ink:#17233d; --muted:#66738e; --accent:#365cf5; --line:#e7ebf4; }
+.stApp { background:#ffffff; color:var(--ink); }
+.block-container { max-width:1160px; padding-top:1.45rem; padding-bottom:5rem; }
+h1,h2,h3 { color:var(--ink); letter-spacing:-.025em; }
+[data-testid="stSidebar"] { background:#fff; border-right:1px solid var(--line); }
+[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] { padding-top:1.6rem; }
+[data-testid="stSidebar"] hr { border-color:var(--line); margin:1.3rem 0; }
+[data-testid="stSidebar"] [role="radiogroup"] { gap:.35rem; }
+[data-testid="stSidebar"] [role="radiogroup"] label { padding:.75rem .65rem; border-radius:12px; font-weight:550; color:#586681; }
+[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) { background:#e9edff; color:#244dd4; font-weight:700; }
+[data-testid="stSidebar"] [role="radiogroup"] label [data-testid="stMarkdownContainer"] p { font-size:.96rem; }
+[data-testid="stSidebar"] [role="radiogroup"] label [data-testid="stWidgetLabel"] { display:none; }
+[data-testid="stSidebar"] .stAlert { border-radius:11px; }
+[data-testid="stChatMessage"] { border:1px solid #edf0f7; border-radius:17px; background:#fff; padding:.8rem 1rem; box-shadow:0 3px 16px rgba(23,35,61,.035); margin-bottom:.8rem; }
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) { background:#f4f6ff; border-color:#e8ecff; }
+[data-testid="stChatInput"] { border-radius:16px; box-shadow:0 3px 15px rgba(35,50,90,.08); }
+[data-testid="stExpander"], [data-testid="stForm"], [data-testid="stVerticalBlockBorderWrapper"] { border-radius:14px; }
+.stButton > button[kind="primary"], [data-testid="stFormSubmitButton"] button[kind="primary"] { background:#365cf5; border-color:#365cf5; border-radius:11px; font-weight:650; }
+.hero { padding:.25rem 0 1.05rem; background:none; border-bottom:1px solid var(--line); margin-bottom:1.55rem; }
+.hero h2 { margin:0 0 .3rem; font-size:1.8rem; font-weight:760; }
+.hero p { color:var(--muted); margin:0; font-size:.96rem; }
+.ui-brand { display:flex; align-items:center; gap:12px; margin:.1rem 0 1.2rem; }
+.ui-brand-mark { color:#365cf5; font-size:1.7rem; font-weight:800; letter-spacing:-.12em; }
+.ui-brand-name { font-size:1.03rem; font-weight:750; line-height:1.2; color:#15223e; }
+.ui-brand-caption { font-size:.76rem; color:#8993a8; margin-top:3px; }
+.ui-section { font-size:.76rem; color:#7d89a0; font-weight:750; letter-spacing:.06em; text-transform:uppercase; margin:1.1rem 0 .5rem; }
+.ui-course { font-size:.87rem; color:#5e6b85; padding:.15rem 0; }
+.ui-status { background:#eefaf2; color:#257847; padding:10px 12px; border-radius:10px; font-size:.87rem; }
+.ui-status.offline { background:#fff4e9; color:#a36319; }
+.ui-subtle { color:#8b95aa; font-size:.8rem; margin-top:10px; }
+.ui-welcome { border:1px solid #e9edf7; border-radius:18px; padding:1.3rem 1.5rem; margin:.5rem 0 1.2rem; background:#fbfcff; }
+.ui-welcome h3 { margin:0 0 .3rem; font-size:1.1rem; }
+.ui-welcome p { margin:0; color:#6c7890; font-size:.91rem; }
+@media(max-width:800px) { .block-container { padding-top:1rem; } .hero h2 { font-size:1.45rem; } }
+
+/* V2: real, icon-led sidebar navigation without Streamlit radio circles */
+[data-testid="stSidebar"] .stButton { margin-bottom: .18rem; }
+[data-testid="stSidebar"] .stButton > button {
+    width: 100%; justify-content: flex-start; text-align: left;
+    border: 0 !important; border-radius: 12px; padding: .65rem .85rem;
+    box-shadow: none !important; font-size: .95rem; font-weight: 540;
+    min-height: 44px; transition: background .15s ease;
+}
+[data-testid="stSidebar"] .stButton > button[kind="secondary"] {
+    background: transparent !important; color: #53617f !important;
+}
+[data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover {
+    background: #f3f5fb !important; color: #3159dc !important;
+}
+[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+    background: #e8edff !important; color: #2454e4 !important;
+    font-weight: 720;
+}
+[data-testid="stSidebar"] .stButton > button p { font-size: .94rem; }
+[data-testid="stSidebar"] { min-width: 280px; }
+.ui-empty {
+    text-align:center; max-width:580px; margin: 13vh auto 2rem;
+    padding: 0 1rem; background: transparent; border: none;
+}
+.ui-empty-icon { font-size: 2.5rem; color: #3d60ed; margin-bottom: .4rem; }
+.ui-empty h3 { font-size: 1.55rem; margin: .4rem 0; }
+.ui-empty p { color: #77839c; font-size: .95rem; }
+.ui-prompts-label { color:#687793; font-size:.76rem; font-weight:750; letter-spacing:.08em; margin-bottom:.6rem; }
+div[data-testid="stChatInput"] { max-width: 1080px; }
+
+/* V3 typography + alignment corrections */
+html { font-size: 17px; }
+[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] { padding: 1.4rem 1.1rem 1.5rem !important; }
+[data-testid="stSidebar"] .stButton > button {
+  display: flex !important; justify-content: flex-start !important;
+  align-items: center !important; text-align: left !important;
+  padding: .72rem 1rem !important; min-height: 52px !important;
+  width: 100% !important;
+}
+[data-testid="stSidebar"] .stButton > button > div,
+[data-testid="stSidebar"] .stButton > button [data-testid="stMarkdownContainer"] {
+  width: 100% !important; flex: 1 1 auto !important;
+  text-align: left !important; justify-content: flex-start !important;
+}
+[data-testid="stSidebar"] .stButton > button p {
+  text-align: left !important; margin: 0 !important;
+  font-size: 1.04rem !important; line-height: 1.4 !important;
+  white-space: nowrap !important;
+}
+.ui-brand { margin: .3rem 0 1.5rem !important; }
+.ui-brand-name { font-size: 1.2rem !important; }
+.ui-brand-caption { font-size: .84rem !important; }
+.ui-section { font-size: .86rem !important; }
+.ui-course, .ui-status { font-size: .98rem !important; }
+.ui-subtle { font-size: .9rem !important; line-height: 1.9; }
+.block-container { padding-top: 2.4rem !important; }
+.hero h2 { font-size: 2.15rem !important; line-height: 1.2 !important; }
+.hero p { font-size: 1.08rem !important; }
+.ui-empty h3 { font-size: 1.75rem !important; }
+.ui-empty p { font-size: 1.08rem !important; }
+.ui-prompts-label { font-size: .87rem !important; }
+[data-testid="stChatInput"] textarea { font-size: 1.04rem !important; }
+
+/* V4: reserve extra scrollable room above the fixed chat composer. */
+
+
+
+/* V8: Q&A landing only — spacious centered typography, one viewport, equal buttons. */
+@media (min-width: 850px) {
+ .stApp:has(.qa-page-marker) [data-testid="stMainBlockContainer"] {
+   padding-top: .65rem !important;
+   padding-bottom: 8.5rem !important;
+ }
+ .stApp:has(.qa-page-marker) .hero {
+   margin: 0 0 .55rem !important;
+   padding: .1rem 0 .65rem !important;
+ }
+ .stApp:has(.qa-page-marker) .hero h2 { font-size: 2.1rem !important; }
+ .stApp:has(.qa-page-marker) .ui-empty {
+   margin: clamp(.5rem, 2.6vh, 1.4rem) auto .65rem !important;
+   padding: 0 .4rem !important;
+   max-width: 850px !important;
+ }
+ .stApp:has(.qa-page-marker) .ui-empty-icon {
+   font-size: 2.25rem !important;
+   line-height: 1.15 !important;
+   margin: 0 0 .35rem !important;
+ }
+ .stApp:has(.qa-page-marker) .ui-empty h3 {
+   font-size: clamp(1.85rem, 2.4vw, 2.45rem) !important;
+   line-height: 1.25 !important;
+   margin: .25rem 0 .65rem !important;
+ }
+ .stApp:has(.qa-page-marker) .ui-empty p {
+   font-size: clamp(1.04rem, 1.4vw, 1.25rem) !important;
+   line-height: 1.55 !important;
+   margin: 0 !important;
+ }
+ .stApp:has(.qa-page-marker) .ui-prompts-label {
+   font-size: .91rem !important;
+   margin: .45rem 0 .4rem !important;
+ }
+ /* Exactly the three suggested-question columns; no change to other pages. */
+ .stApp:has(.qa-page-marker) [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:nth-child(3)) > [data-testid="stColumn"] .stButton button {
+   height: 64px !important;
+   min-height: 64px !important;
+   max-height: 64px !important;
+   width: 100% !important;
+   padding: .4rem .65rem !important;
+   display: flex !important;
+   justify-content: center !important;
+   align-items: center !important;
+   text-align: center !important;
+   border-radius: 12px !important;
+ }
+ .stApp:has(.qa-page-marker) [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:nth-child(3)) > [data-testid="stColumn"] .stButton button p {
+   font-size: clamp(.85rem, 1.25vw, 1rem) !important;
+   line-height: 1.25 !important;
+   text-align: center !important;
+   white-space: normal !important;
+   margin: 0 !important;
+ }
+ .stApp:has(.qa-page-marker) [data-testid="stChatInput"] textarea {
+   min-height: 100px !important;
+   max-height: 170px !important;
+   padding: 16px 12px !important;
+   font-size: 1.05rem !important;
+ }
+ .stApp:has(.qa-page-marker) [data-testid="stChatInput"],
+ .stApp:has(.qa-page-marker) [data-testid="stChatInput"] > div {
+   min-height: 116px !important;
+ }
+}
+/* Short laptop viewports: preserve all text; tighten only vertical gaps. */
+@media (min-width: 850px) and (max-height: 780px) {
+ .stApp:has(.qa-page-marker) .hero { margin-bottom: .25rem !important; padding-bottom: .35rem !important; }
+ .stApp:has(.qa-page-marker) .ui-empty { margin: .35rem auto .35rem !important; }
+ .stApp:has(.qa-page-marker) .ui-empty-icon { margin-bottom: .05rem !important; font-size: 1.8rem !important; }
+ .stApp:has(.qa-page-marker) .ui-empty h3 { margin: .1rem 0 .35rem !important; font-size: 1.9rem !important; }
+ .stApp:has(.qa-page-marker) .ui-empty p { font-size: 1.02rem !important; line-height: 1.35 !important; }
+ .stApp:has(.qa-page-marker) .ui-prompts-label { margin: .2rem 0 .2rem !important; }
+}

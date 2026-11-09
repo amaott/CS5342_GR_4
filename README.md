@@ -54,7 +54,7 @@ From the project directory containing `app.py` and `requirements.txt`:
 
 ```bash
 python -m pip install -r requirements.txt
-ollama pull qwen3:4b
+ollama pull qwen2.5:3b
 ollama pull nomic-embed-text
 ```
 
